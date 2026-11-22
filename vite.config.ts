@@ -12,7 +12,7 @@ function storeSeo(): Plugin {
     name: 'store-seo',
     transformIndexHtml: { order: 'pre', handler: (html) => html.replace('<!--SEO_HEAD-->', buildSeoHead(store, url)) },
     buildStart() {
-      configWarnings(store, env).forEach((w) => this.warn(`[store setup] ${w}`));
+      configWarnings(store, env).forEach((w: string) => this.warn(`[store setup] ${w}`));
       let hasPhoto = false;
       try { hasPhoto = readdirSync('src/assets/store').some((f) => /^storefront\.(jpe?g|png|webp|avif)$/i.test(f)); } catch { /* none */ }
       if (!hasPhoto) this.warn('[store setup] No storefront photo found. Save it as src/assets/store/storefront.jpg');
