@@ -22,7 +22,7 @@ Requires Node 18+. The build prints a **"[store setup]" checklist** of anything 
 
 *Check it is live:* after deploying, open `https://YOUR-SITE.vercel.app/images/kailas-super-market.jpg`. If your shop photo opens, it is deployed. If you get a 404, the file did not reach GitHub, or Vercel is building a different folder (see "Troubleshooting").
 
-**Product photos** — each product shows `src/assets/products/<product-id>.jpg` (e.g. `tomato.jpg`). Without a photo the card shows a plain icon tile, never a broken image.
+**Product photos** — each product shows a real downloaded photo from `src/assets/products/<product-id>.jpg` (e.g. `tomato.jpg`). Without a photo the card shows a plain icon tile, never a broken image.
 
 - **Automatic on every deploy (default).** The build runs `scripts/fetch-photos.ts` first. With no setup it downloads free-licensed photos from Wikimedia Commons for any product that has no photo file, and lists the credits in the website footer ("Photo credits"). If the download fails, the site still deploys. Turn this off with the Vercel variable `PHOTOS_AUTO=off`. For nicer, studio-style photos add a free Pexels key as the Vercel variable `PEXELS_API_KEY` (pexels.com/api).
 - **Download once and keep them (recommended).** Run `npm run photos` on your computer, then open **`photo-review.html`** to check every photo, delete any wrong ones, and commit the files in `src/assets/products/` and `src/data/photoCredits.json`. Committed photos are never overwritten.
@@ -31,6 +31,8 @@ Requires Node 18+. The build prints a **"[store setup]" checklist** of anything 
 Automatic search picks the first suitable match, so **always review the photos before the site goes live**. Packaged items (cleaning products, shampoo) are the most likely to need a hand-picked replacement.
 
 ## 2. Store details — one file: `src/config/store.ts`
+
+**Required before WhatsApp ordering can reach the shop:** enter the shop's real WhatsApp number in `whatsappNumber` (India: 10 digits or `91` + 10 digits). The floating WhatsApp button and cart checkout are already wired to open WhatsApp with a pre-filled message; without the shop number they intentionally show a setup notice instead of sending customers to the wrong contact.
 Name, announcement bar, **phone**, **WhatsApp number**, **address**, **Google Maps link / coordinates**, **opening hours**, pickup/delivery options, social links, About text, SEO title/description, seasonal collection. Leave a field `''` if unknown: it is hidden on the site and left out of SEO data. Nothing is invented.
 
 - **WhatsApp:** `whatsappNumber: '919876543210'` (country code + number; a plain 10-digit Indian number also works). Until set, the cart shows "WhatsApp ordering isn't switched on yet" and never claims an order was sent. After a customer taps *Order on WhatsApp*, WhatsApp opens with the message ready; the customer must press **Send**.
