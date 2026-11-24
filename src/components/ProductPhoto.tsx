@@ -7,7 +7,8 @@ const found = import.meta.glob('/src/assets/products/*.{jpg,jpeg,png,webp,avif}'
 const photos: Record<string, string> = {};
 for (const [path, url] of Object.entries(found)) photos[path.split('/').pop()!.replace(/\.[^.]+$/, '')] = url;
 
-export const photoFor = (p: Pick<Product, 'id' | 'image'>): string | null => p.image ?? photos[p.id] ?? null;
+// Every catalogue item gets a real category photograph when an individual product photo is not supplied.
+export const photoFor = (p: Pick<Product, 'id' | 'image' | 'category'>): string | null => p.image ?? photos[p.id] ?? `/products/${p.category}.jpg`;
 
 const icons: Record<string, LucideIcon> = { fruits: Apple, vegetables: Carrot, dairy: Milk, grocery: Wheat, snacks: Cookie, beverages: Coffee, 'personal-care': Droplets, 'home-essentials': House };
 
