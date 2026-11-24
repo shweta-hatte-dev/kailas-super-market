@@ -6,6 +6,7 @@ import { percentOff } from '../lib/format';
 import { useShop } from '../context/ShopContext';
 import { getProduct } from '../data/lookup';
 import { ProductPhoto } from './ProductPhoto';
+import { Tilt } from './Tilt';
 import { Availability, Price, QtyStepper } from './ui';
 
 export function productTint(p: Product) { return categoryMap[p.category]?.tint ?? '#F2ECDD'; }
@@ -51,10 +52,10 @@ export function ProductCard({ p, index = 0 }: { p: Product; index?: number }) {
   const off = percentOff(p.price, p.mrp);
   const catName = categoryMap[p.category]?.name ?? 'Combo offer';
   return (
-    <motion.article
+    <Tilt max={4} className="h-full"><motion.article
       initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-30px' }}
       transition={{ duration: 0.35, delay: (index % 4) * 0.05 }}
-      className="group flex flex-col overflow-hidden rounded-xl border border-forest/10 bg-white shadow-[0_2px_10px_-6px_rgba(23,63,43,0.25)] transition-all duration-300 hover:-translate-y-1 hover:shadow-lift"
+      className="group flex h-full flex-col overflow-hidden rounded-xl border border-forest/10 bg-white shadow-[0_2px_10px_-6px_rgba(23,63,43,0.25)] transition-all duration-300 hover:-translate-y-1 hover:shadow-lift"
     >
       <div className="relative overflow-hidden" style={{ background: productTint(p) }}>
         <button type="button" onClick={() => openQuickView(p.id)} aria-label={`View details for ${p.name}`} className="block aspect-[5/4] w-full">
@@ -78,6 +79,6 @@ export function ProductCard({ p, index = 0 }: { p: Product; index?: number }) {
         </div>
         <div className="mt-3 flex min-h-[44px] items-end"><AddControl p={p} /></div>
       </div>
-    </motion.article>
+    </motion.article></Tilt>
   );
 }

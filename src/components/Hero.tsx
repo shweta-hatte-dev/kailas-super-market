@@ -5,6 +5,7 @@ import { store } from '../config/store';
 import { heroPromo } from '../data/offers';
 import { useShop } from '../context/ShopContext';
 import { StoreImage } from './StoreImage';
+import { Tilt } from './Tilt';
 import { WhatsAppGlyph, WhatsAppLink } from './ui';
 
 const line = { hidden: { opacity: 0, y: 26 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } } };
@@ -49,22 +50,22 @@ export function Hero() {
           </motion.ul>
         </motion.div>
 
-        <motion.div className="relative" initial={{ opacity: 0, y: 30, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}>
-          <div ref={frame} className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-[0_30px_60px_-28px_rgba(23,63,43,0.55)] ring-1 ring-forest/10">
+        <Tilt max={5} className="relative"><motion.div className="relative" style={{ transformStyle: 'preserve-3d' }} initial={{ opacity: 0, y: 30, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}>
+          <div ref={frame} className="relative aspect-[3/2] overflow-hidden rounded-2xl shadow-[0_30px_60px_-28px_rgba(23,63,43,0.55)] ring-1 ring-forest/10">
             <motion.div style={{ y, scale: 1.12 }} className="h-full w-full">
               <StoreImage priority className="h-full w-full" position="center 50%" />
             </motion.div>
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-forest/35 to-transparent" aria-hidden="true" />
           </div>
-          <motion.div aria-hidden="true" className="absolute -right-3 -top-3 hidden h-16 w-16 rounded-full border-[6px] border-gold/70 sm:block" animate={{ y: [0, -8, 0] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }} />
-          <motion.div aria-hidden="true" className="absolute -bottom-3 right-10 h-6 w-6 rounded-full bg-gold" animate={{ y: [0, 7, 0] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }} />
+          <motion.div aria-hidden="true" style={{ transform: 'translateZ(50px)' }} className="absolute -right-3 -top-3 hidden h-16 w-16 rounded-full border-[6px] border-gold/70 sm:block" animate={{ y: [0, -8, 0] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }} />
+          <motion.div aria-hidden="true" style={{ transform: 'translateZ(40px)' }} className="absolute -bottom-3 right-10 h-6 w-6 rounded-full bg-gold" animate={{ y: [0, 7, 0] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }} />
           <motion.a href="#offers" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1, duration: 0.5 }}
-            className="absolute -bottom-6 left-3 max-w-[250px] rounded-xl bg-white p-4 shadow-lift ring-1 ring-forest/10 sm:left-5 lg:-left-6">
+            style={{ transform: 'translateZ(70px)' }} className="absolute -bottom-6 left-3 max-w-[250px] rounded-xl bg-white p-4 shadow-lift ring-1 ring-forest/10 sm:left-5 lg:-left-6">
             <span className="price-tag text-sm">{heroPromo.title}</span>
             <span className="mt-2 block text-[15px] leading-snug text-ink/85">{heroPromo.text}</span>
             <span className="mt-2 flex items-center gap-1 text-sm font-semibold text-forest">See offers <ArrowRight size={14} aria-hidden="true" />{store.demoData && <span className="ml-auto text-xs font-medium text-ink/60">Sample</span>}</span>
           </motion.a>
-        </motion.div>
+        </motion.div></Tilt>
       </div>
     </section>
   );

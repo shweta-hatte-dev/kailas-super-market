@@ -34,7 +34,7 @@ export interface StoreConfig {
   demoData: boolean;
   /** Shows small yellow "setup needed" notes where details are missing. Set to false before going live. */
   showSetupHints: boolean;
-  storeImage: { alt: string; position: string };
+  storeImage: { src: string; alt: string; position: string };
   social: { instagram: string; facebook: string; youtube: string };
   about: { heading: string; paragraphs: string[] };
   /** The five reasons shown in "Why shop with us". Edit freely; keep claims to what the store really offers. */
@@ -82,7 +82,7 @@ export const store: StoreConfig = {
   demoData: true,
   showSetupHints: true,
 
-  storeImage: { alt: 'The Kailas Super Market storefront', position: 'center 55%' },
+  storeImage: { src: '/images/kailas-super-market.jpg', alt: 'The Kailas Super Market storefront', position: 'center 50%' },
 
   social: { instagram: '', facebook: '', youtube: '' },
 

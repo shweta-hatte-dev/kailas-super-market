@@ -39,6 +39,18 @@ describe('whole app', () => {
     expect(errors).toEqual([]);
   });
 
+  it('hero shows the real shop photo: direct path, visible, not hidden', () => {
+    render(<App />);
+    const hero = document.getElementById('home')!;
+    const img = hero.querySelector('img')!;
+    expect(img.getAttribute('src')).toBe('/images/kailas-super-market.jpg');
+    expect(img.getAttribute('alt')).toMatch(/Kailas Super Market/);
+    expect(img.className).not.toMatch(/opacity-0|hidden/);
+    expect(img.getAttribute('loading')).toBe('eager');
+    // used again in the store section
+    expect(document.getElementById('about')!.querySelector('img')!.getAttribute('src')).toBe('/images/kailas-super-market.jpg');
+  });
+
   it('has no images without alt text', () => {
     render(<App />);
     document.querySelectorAll('img').forEach((i) => expect(i.getAttribute('alt')).toBeTruthy());

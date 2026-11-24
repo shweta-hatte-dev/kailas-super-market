@@ -5,6 +5,7 @@ import { allProducts, getProduct } from '../data/lookup';
 import { useShop } from '../context/ShopContext';
 import { ProductPhoto } from './ProductPhoto';
 import { SectionHead } from './ui';
+import { Tilt } from './Tilt';
 
 export function Categories() {
   const { goToShop } = useShop();
@@ -17,10 +18,10 @@ export function Categories() {
             const count = allProducts.filter((p) => p.category === c.slug).length;
             const cover = getProduct(c.cover) ?? allProducts.find((p) => p.category === c.slug)!;
             return (
-              <motion.button
-                key={c.slug} type="button" onClick={() => goToShop({ category: c.slug })}
+              <Tilt key={c.slug} max={5} className="h-full"><motion.button
+                 type="button" onClick={() => goToShop({ category: c.slug })}
                 initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-30px' }} transition={{ duration: 0.35, delay: (i % 4) * 0.05 }}
-                className="group relative aspect-[4/5] overflow-hidden rounded-xl bg-forest text-left shadow-[0_2px_12px_-6px_rgba(23,63,43,0.4)] transition-all duration-300 hover:-translate-y-1 hover:shadow-lift sm:aspect-[5/6]"
+                className="group relative aspect-[4/5] w-full overflow-hidden rounded-xl bg-forest text-left shadow-[0_2px_12px_-6px_rgba(23,63,43,0.4)] transition-all duration-300 hover:-translate-y-1 hover:shadow-lift sm:aspect-[5/6]"
                 aria-label={`${c.name}, ${count} products`}
               >
                 <ProductPhoto p={cover} className="absolute inset-0 h-full w-full" zoom />
@@ -30,7 +31,7 @@ export function Categories() {
                   <p className="mt-0.5 text-sm text-cream/85">{count} products</p>
                 </div>
                 <span className="absolute right-2.5 top-2.5 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-forest transition-colors group-hover:bg-gold" aria-hidden="true"><ArrowUpRight size={18} /></span>
-              </motion.button>
+              </motion.button></Tilt>
             );
           })}
         </div>

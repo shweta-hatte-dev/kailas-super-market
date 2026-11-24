@@ -1,6 +1,8 @@
 import { store } from '../config/store';
 import { categories } from '../data/categories';
 import { formatAddress, phoneHref } from '../lib/contact';
+import credits from '../data/photoCredits.json';
+import { getProduct } from '../data/lookup';
 import { useShop } from '../context/ShopContext';
 import { Logo } from './Navbar';
 import { WhatsAppGlyph, WhatsAppLink } from './ui';
@@ -12,6 +14,7 @@ export function Footer() {
   const social = Object.entries(store.social).filter(([, v]) => v.trim());
   const links = [['Shop', '#shop'], ['Categories', '#categories'], ['Offers', '#offers'], ['Shopping list', '#list'], ['Budget', '#budget'], ['About', '#about'], ['Visit the store', '#location'], ['Contact', '#contact']];
   const h = 'font-sans text-base font-semibold text-cream';
+  const credited = Object.entries(credits as Record<string, { by: string; license: string; url: string; source: string }>).filter(([id]) => getProduct(id));
   return (
     <footer className="on-dark bg-forest text-cream/85">
       <div className="container-x grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_0.8fr_1.1fr]">
@@ -41,6 +44,16 @@ export function Footer() {
           </ul>
         </div>
       </div>
+      {credited.length > 0 && (
+        <div className="border-t border-cream/15">
+          <details className="container-x py-4 text-sm text-cream/75">
+            <summary className="min-h-[40px] cursor-pointer py-2 font-medium text-cream">Photo credits</summary>
+            <ul className="mt-2 grid gap-x-8 gap-y-1 sm:grid-cols-2 lg:grid-cols-3">
+              {credited.map(([id, c]) => <li key={id}>{getProduct(id)!.name}: <a href={c.url} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-gold">{c.by}</a>, {c.license} ({c.source})</li>)}
+            </ul>
+          </details>
+        </div>
+      )}
       <div className="border-t border-cream/15">
         <div className="container-x flex flex-col gap-1 py-5 text-sm text-cream/75 sm:flex-row sm:justify-between">
           <p>© {new Date().getFullYear()} {store.name}. All rights reserved.</p>

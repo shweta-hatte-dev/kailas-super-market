@@ -18,15 +18,17 @@ Requires Node 18+. The build prints a **"[store setup]" checklist** of anything 
 
 ## 1. Photos
 
-**Storefront photo** — already included at `src/assets/store/storefront.jpg` (used in the hero, the store section and the social preview). To replace it, overwrite that file keeping the name. The hero keeps the shop sign visible; change the crop with `storeImage.position` in `src/config/store.ts`.
+**Storefront photo** — the real shop photo is `public/images/kailas-super-market.jpg` and is used in the hero, the store section and the social preview. To replace it, overwrite that file keeping the name. The build **fails with a clear message if the file is missing**, so you can never deploy without it.
 
-**Product photos** — every product shows the photo `src/assets/products/<product-id>.jpg` (e.g. `tomato.jpg`). Until a photo exists the card shows a clean icon tile, never a broken image. Three ways to get photos:
+*Check it is live:* after deploying, open `https://YOUR-SITE.vercel.app/images/kailas-super-market.jpg`. If your shop photo opens, it is deployed. If you get a 404, the file did not reach GitHub, or Vercel is building a different folder (see "Troubleshooting").
 
-1. **Automatic (recommended, ~3 minutes).** Get a free API key at https://www.pexels.com/api/ (sign up, copy the key). Then in the project folder run `npm run photos`, paste the key when asked. It downloads one real photo per product (free Pexels licence, credits saved in `src/assets/products/CREDITS.md`). Look through them; to swap any photo, replace its file keeping the same name. Commit the new files to GitHub.
-2. **Let Vercel do it.** In Vercel: Project → Settings → Environment Variables → add `PEXELS_API_KEY` = your key, then redeploy. Missing photos are downloaded during each build (a failed download never breaks the deploy).
-3. **By hand.** Save your own photos as `<product-id>.jpg` in `src/assets/products/`. `npm run photos:check` lists what is still missing. Square-ish landscape photos around 720×576 px work best.
+**Product photos** — each product shows `src/assets/products/<product-id>.jpg` (e.g. `tomato.jpg`). Without a photo the card shows a plain icon tile, never a broken image.
 
-The automatic search picks the first match for each product, so **check the results**; a few (for example cleaning products) may need a hand-picked replacement.
+- **Automatic on every deploy (default).** The build runs `scripts/fetch-photos.ts` first. With no setup it downloads free-licensed photos from Wikimedia Commons for any product that has no photo file, and lists the credits in the website footer ("Photo credits"). If the download fails, the site still deploys. Turn this off with the Vercel variable `PHOTOS_AUTO=off`. For nicer, studio-style photos add a free Pexels key as the Vercel variable `PEXELS_API_KEY` (pexels.com/api).
+- **Download once and keep them (recommended).** Run `npm run photos` on your computer, then open **`photo-review.html`** to check every photo, delete any wrong ones, and commit the files in `src/assets/products/` and `src/data/photoCredits.json`. Committed photos are never overwritten.
+- **Your own photos.** Save them as `<product-id>.jpg` in `src/assets/products/`. `npm run photos:check` lists what is missing.
+
+Automatic search picks the first suitable match, so **always review the photos before the site goes live**. Packaged items (cleaning products, shampoo) are the most likely to need a hand-picked replacement.
 
 ## 2. Store details — one file: `src/config/store.ts`
 Name, announcement bar, **phone**, **WhatsApp number**, **address**, **Google Maps link / coordinates**, **opening hours**, pickup/delivery options, social links, About text, SEO title/description, seasonal collection. Leave a field `''` if unknown: it is hidden on the site and left out of SEO data. Nothing is invented.
@@ -58,6 +60,10 @@ Built in from `store.ts`: title, description, canonical URL, Open Graph / social
 2. In the extracted folder: `git init && git add . && git commit -m "Kailas Super Market website" && git branch -M main && git remote add origin <your-repo-url> && git push -u origin main` (or drag the files into GitHub's "upload files" page; do **not** upload `node_modules` or `dist`).
 3. On vercel.com choose **Add New → Project**, import the repository. Vercel detects Vite automatically (Build: `npm run build`, Output: `dist`). Click **Deploy**.
 4. Every later `git push` redeploys. Add a custom domain under Project → Settings → Domains.
+
+## Troubleshooting
+- **The shop photo does not show on the live site.** Open `/images/kailas-super-market.jpg` on your site (see above). A 404 means the live site was not built from this project: make sure `package.json` and the `public` folder are at the **top level** of the GitHub repository (not inside an extra folder), that `public/images/kailas-super-market.jpg` is in the repository on github.com, and that Vercel's *Root Directory* (Project → Settings → General) is empty. Then redeploy from the latest commit. After redeploying, hard-refresh the page (Ctrl+Shift+R) so the browser drops its old copy.
+- **Build warnings** starting with `[store setup]` are your to-do list (WhatsApp number, address, hours); they do not stop the build.
 
 ## Notes
 - Cart, wishlist, list, budget and recently viewed are stored in the visitor's own browser (localStorage). There is no admin panel; the owner edits the files above. Orders are never stored on a server: they exist only as the WhatsApp message.

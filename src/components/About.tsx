@@ -10,7 +10,7 @@ export function About() {
     <section id="about" aria-labelledby="about-title" className="bg-cream-deep py-14 sm:py-24">
       <div className="container-x grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }} className="relative">
-          <StoreImage className="aspect-[4/3] rounded-2xl shadow-[0_30px_60px_-30px_rgba(23,63,43,0.5)] ring-1 ring-forest/10" position="center 50%" />
+          <StoreImage className="aspect-[3/2] rounded-2xl shadow-[0_30px_60px_-30px_rgba(23,63,43,0.5)] ring-1 ring-forest/10" position="center 50%" />
           <p className="absolute bottom-3 left-3 rounded-full bg-white/95 px-3.5 py-1.5 text-sm font-semibold text-forest shadow">{store.name}</p>
         </motion.div>
         <div>

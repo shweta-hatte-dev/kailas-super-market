@@ -1,6 +1,6 @@
 import { defineConfig, loadEnv, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
-import { readdirSync } from 'node:fs';
+import { existsSync, readdirSync } from 'node:fs';
 import { products } from './src/data/products';
 import { store } from './src/config/store';
 import { buildRobots, buildSeoHead, buildSitemap, configWarnings, resolveSiteUrl } from './src/lib/seo';
@@ -14,9 +14,7 @@ function storeSeo(): Plugin {
     transformIndexHtml: { order: 'pre', handler: (html) => html.replace('<!--SEO_HEAD-->', buildSeoHead(store, url)) },
     buildStart() {
       configWarnings(store, env).forEach((w) => this.warn(`[store setup] ${w}`));
-      let hasPhoto = false;
-      try { hasPhoto = readdirSync('src/assets/store').some((f) => /^storefront\.(jpe?g|png|webp|avif)$/i.test(f)); } catch { /* none */ }
-      if (!hasPhoto) this.warn('[store setup] No storefront photo found. Save it as src/assets/store/storefront.jpg');
+      if (!existsSync('public' + store.storeImage.src)) this.error(`Storefront photo missing: expected public${store.storeImage.src}`);
       let have = new Set<string>();
       try { have = new Set(readdirSync('src/assets/products').map((f) => f.replace(/\.[^.]+$/, ''))); } catch { /* none */ }
       const missing = products.filter((p) => !p.image && !have.has(p.id));
