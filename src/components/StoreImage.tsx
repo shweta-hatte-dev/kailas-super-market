@@ -25,10 +25,11 @@ export function StoreImage({
         src="/images/kailas-super-market.jpg"
         alt={store.storeImage.alt}
         onLoad={() => setLoaded(true)}
-        onError={(e) => console.error('Store image failed:', e.currentTarget.src)}
         loading={priority ? 'eager' : 'lazy'}
         decoding="async"
-        style={{ objectPosition: position ?? store.storeImage.position }}
+        style={{
+          objectPosition: position ?? store.storeImage.position
+        }}
         className={`h-full w-full object-cover transition-opacity duration-500 ${
           loaded ? 'opacity-100' : 'opacity-0'
         }`}
