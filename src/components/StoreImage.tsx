@@ -1,35 +1,37 @@
+
 import { useState } from 'react';
 import { store } from '../config/store';
 
-interface Props { className?: string; priority?: boolean; position?: string }
+interface Props {
+  className?: string;
+  priority?: boolean;
+  position?: string;
+}
 
-/**
- * The real shop photo. It is a plain <img> pointing at /images/kailas-super-market.jpg
- * (the file lives in public/images/), always visible, never hidden by overlays or fade-ins.
- */
-export function StoreImage({ className = '', priority = false, position }: Props) {
-  const [failed, setFailed] = useState(false);
+export function StoreImage({
+  className = '',
+  priority = false,
+  position
+}: Props) {
+  const [loaded, setLoaded] = useState(false);
 
-  if (failed) {
-    return (
-      <div className={`relative flex items-end overflow-hidden bg-forest ${className}`} role="img" aria-label={store.storeImage.alt}>
-        <p className="relative p-5 font-display text-2xl text-cream">{store.name}</p>
-      </div>
-    );
-  }
   return (
     <div className={`relative overflow-hidden bg-sage ${className}`}>
+      {!loaded && (
+        <div className="absolute inset-0 animate-pulse bg-sage-deep" />
+      )}
+
       <img
-        src={store.storeImage.src}
+        src="/images/kailas-super-market.jpg"
         alt={store.storeImage.alt}
-        width={1599}
-        height={899}
-        onError={() => setFailed(true)}
+        onLoad={() => setLoaded(true)}
+        onError={(e) => console.error('Store image failed:', e.currentTarget.src)}
         loading={priority ? 'eager' : 'lazy'}
         decoding="async"
-        {...(priority ? ({ fetchpriority: 'high' } as object) : {})}
         style={{ objectPosition: position ?? store.storeImage.position }}
-        className="absolute inset-0 h-full w-full object-cover"
+        className={`h-full w-full object-cover transition-opacity duration-500 ${
+          loaded ? 'opacity-100' : 'opacity-0'
+        }`}
       />
     </div>
   );
