@@ -43,8 +43,8 @@ export function FloatingActions() {
               className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-forest shadow-lift ring-1 ring-forest/20 hover:bg-sage"><ArrowUp size={20} /></motion.a>
           )}
         </AnimatePresence>
-        <WhatsAppLink className="flex h-14 items-center gap-2 rounded-full bg-leaf-dark px-4 font-semibold text-white shadow-lift transition-colors hover:bg-forest" >
-          <WhatsAppGlyph size={24} /><span className="hidden sm:inline">Chat on WhatsApp</span><span className="sr-only sm:hidden">Chat on WhatsApp with {store.name}</span>
+        <WhatsAppLink className="flex h-14 items-center gap-2 rounded-full px-4 font-semibold text-white shadow-lift transition-all duration-300 hover:-translate-y-0.5 hover:scale-105 [background:#1c7a43] hover:[background:#15602f]" >
+          <WhatsAppGlyph size={26} /><span className="hidden sm:inline">Order on WhatsApp</span><span className="sr-only sm:hidden">Order on WhatsApp with {store.name}</span>
         </WhatsAppLink>
       </div>
       <AnimatePresence>

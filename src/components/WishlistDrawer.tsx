@@ -23,7 +23,7 @@ export function WishlistDrawer() {
         <ul className="divide-y divide-forest/10">
           {items.map((p) => (
             <li key={p.id} className="flex gap-3 py-3">
-              <div className="h-[72px] w-[72px] shrink-0 rounded-md" style={{ background: productTint(p) }}><ProductVisual p={p} className="h-full w-full p-1" /></div>
+              <div className="h-[72px] w-[72px] shrink-0 overflow-hidden rounded-lg" style={{ background: productTint(p) }}><ProductVisual p={p} /></div>
               <div className="min-w-0 flex-1">
                 <p className="text-[15px] font-semibold leading-snug">{p.name}</p>
                 <p className="text-sm text-ink/65">{p.unit}</p>

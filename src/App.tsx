@@ -8,6 +8,8 @@ import { QuickEssentials } from './components/QuickEssentials';
 import { ShopSection } from './components/ShopSection';
 import { RecentlyViewed } from './components/RecentlyViewed';
 import { Offers } from './components/Offers';
+import { Freshness } from './components/Freshness';
+import { WhyUs } from './components/WhyUs';
 import { Seasonal } from './components/Seasonal';
 import { Budget } from './components/Budget';
 import { ShoppingList } from './components/ShoppingList';
@@ -31,10 +33,12 @@ export function App() {
         <main>
           <Hero />
           <Categories />
-          <QuickEssentials />
           <ShopSection />
+          <Freshness />
+          <QuickEssentials />
           <RecentlyViewed />
           <Offers />
+          <WhyUs />
           <Seasonal />
           <Budget />
           <ShoppingList />

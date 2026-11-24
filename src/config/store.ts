@@ -37,6 +37,8 @@ export interface StoreConfig {
   storeImage: { alt: string; position: string };
   social: { instagram: string; facebook: string; youtube: string };
   about: { heading: string; paragraphs: string[] };
+  /** The five reasons shown in "Why shop with us". Edit freely; keep claims to what the store really offers. */
+  whyUs: { title: string; text: string }[];
   /** Seasonal collection. active: diwali | ganesh | holi | sankranti | summer | monsoon | winter | christmas */
   seasonal: { enabled: boolean; active: string };
 }
@@ -91,6 +93,14 @@ export const store: StoreConfig = {
       'This website lets you browse the shelves, plan your shopping before you leave, and send your order to the store on WhatsApp for pickup or delivery.',
     ],
   },
+
+  whyUs: [
+    { title: 'Everyday essentials in one place', text: 'Groceries, fresh produce, dairy, snacks and household items under one roof.' },
+    { title: 'Convenient shopping', text: 'Browse online, save a shopping list and send your order on WhatsApp.' },
+    { title: 'Quality products', text: 'Everyday products you know, with fresh fruit and vegetables on the shelf.' },
+    { title: 'Pickup or delivery', text: 'Choose pickup or home delivery when you order. The store confirms availability and delivery details with you on WhatsApp.' },
+    { title: 'Friendly neighbourhood service', text: 'A local store that is happy to help you find what you need.' },
+  ],
 
   seasonal: { enabled: true, active: 'winter' },
 };

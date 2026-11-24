@@ -15,7 +15,7 @@ export function QuickView() {
       {p && (
         <div className="grid sm:grid-cols-2">
           <div className="relative" style={{ background: productTint(p) }}>
-            <ProductVisual p={p} className="mx-auto aspect-square w-full max-w-[360px] p-6" />
+            <ProductVisual p={p} className="aspect-square w-full sm:aspect-auto sm:h-full sm:min-h-[320px]" />
             {off > 0 && <span className="absolute left-3 top-3 rounded bg-gold px-2.5 py-1 text-sm font-bold text-forest">{off}% off</span>}
           </div>
           <div className="flex flex-col p-5 sm:p-7">
@@ -34,7 +34,7 @@ export function QuickView() {
                 {related.map((r) => (
                   <li key={r.id} className="w-[132px] shrink-0">
                     <button type="button" onClick={() => openQuickView(r.id)} className="block w-full rounded-lg bg-white p-2 text-left ring-1 ring-forest/10 hover:shadow-lift">
-                      <span className="block rounded-md" style={{ background: productTint(r) }}><ProductVisual p={r} className="aspect-square w-full p-1" /></span>
+                      <span className="block aspect-square overflow-hidden rounded-md" style={{ background: productTint(r) }}><ProductVisual p={r} /></span>
                       <span className="mt-1.5 block truncate text-sm font-semibold">{r.name}</span>
                       <span className="text-xs text-ink/65">{r.unit}</span>
                     </button>

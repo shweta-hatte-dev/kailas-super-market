@@ -72,10 +72,10 @@ describe('whole app', () => {
   it('filters by category and by search, with an empty state', async () => {
     const u = userEvent.setup();
     render(<App />);
-    await u.click(screen.getByRole('button', { name: /^Pulses & Dal, \d+ products/ }));
-    expect(screen.getByRole('heading', { name: 'Pulses & Dal', level: 2 })).toBeTruthy();
+    await u.click(screen.getByRole('button', { name: /^Dairy, \d+ products/ }));
+    expect(screen.getByRole('heading', { name: 'Dairy', level: 2 })).toBeTruthy();
     const shop = document.getElementById('shop')!;
-    expect(within(shop).getAllByRole('article').every((a) => /Pulses & Dal/.test(a.textContent!))).toBe(true);
+    expect(within(shop).getAllByRole('article').every((a) => /Dairy/.test(a.textContent!))).toBe(true);
     await u.click(within(shop).getByRole('button', { name: 'All' }));
     await u.type(shopQ(), 'dahi');
     expect(within(shop).getAllByRole('article')).toHaveLength(1);

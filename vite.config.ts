@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import { readdirSync } from 'node:fs';
+import { products } from './src/data/products';
 import { store } from './src/config/store';
 import { buildRobots, buildSeoHead, buildSitemap, configWarnings, resolveSiteUrl } from './src/lib/seo';
 
@@ -16,6 +17,10 @@ function storeSeo(): Plugin {
       let hasPhoto = false;
       try { hasPhoto = readdirSync('src/assets/store').some((f) => /^storefront\.(jpe?g|png|webp|avif)$/i.test(f)); } catch { /* none */ }
       if (!hasPhoto) this.warn('[store setup] No storefront photo found. Save it as src/assets/store/storefront.jpg');
+      let have = new Set<string>();
+      try { have = new Set(readdirSync('src/assets/products').map((f) => f.replace(/\.[^.]+$/, ''))); } catch { /* none */ }
+      const missing = products.filter((p) => !p.image && !have.has(p.id));
+      if (missing.length) this.warn(`[store setup] ${missing.length} of ${products.length} products have no photo yet (they show a plain icon tile). Run: npm run photos`);
     },
     generateBundle() {
       this.emitFile({ type: 'asset', fileName: 'robots.txt', source: buildRobots(url) });

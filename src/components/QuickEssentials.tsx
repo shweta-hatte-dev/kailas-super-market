@@ -25,7 +25,7 @@ export function QuickEssentials() {
             const q = qtyOf(p.id);
             return (
               <li key={p.id} className="w-[158px] shrink-0 rounded-lg bg-white p-3 ring-1 ring-forest/10 sm:w-[184px]">
-                <div className="rounded-md" style={{ background: productTint(p) }}><ProductVisual p={p} className="mx-auto aspect-square w-[78%] p-1.5" /></div>
+                <div className="aspect-square overflow-hidden rounded-lg" style={{ background: productTint(p) }}><ProductVisual p={p} /></div>
                 <p className="mt-2 truncate text-[15px] font-semibold" title={p.name}>{p.name}</p>
                 <p className="text-sm text-ink/65">{p.unit}</p>
                 <div className="mt-1.5 flex items-center justify-between gap-1">

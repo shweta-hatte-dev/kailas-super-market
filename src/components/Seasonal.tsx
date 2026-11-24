@@ -1,9 +1,8 @@
 import { motion } from 'framer-motion';
 import { getProduct } from '../data/lookup';
 import type { Product } from '../types';
-import { ArtGroup } from './ProductArt';
 import { activeSeason } from './Offers';
-import { AddControl } from './ProductCard';
+import { AddControl, ProductVisual } from './ProductCard';
 import { Price } from './ui';
 
 const tones = {
@@ -40,7 +39,7 @@ export function Seasonal() {
             {items.map((p, i) => (
               <motion.div key={p.id} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05, duration: 0.35 }}
                 className="flex flex-col rounded-lg bg-white p-3 text-ink">
-                <ArtGroup ids={[p.id]} className="mx-auto aspect-square w-[80%]" />
+                <div className="aspect-square overflow-hidden rounded-md"><ProductVisual p={p} /></div>
                 <p className="mt-1 text-[15px] font-semibold leading-snug">{p.name}</p>
                 <p className="text-sm text-ink/65">{p.unit}</p>
                 <Price price={p.price} mrp={p.mrp} className="mt-1" />

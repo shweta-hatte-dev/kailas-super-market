@@ -6,23 +6,25 @@ import { products } from './products';
  * Edit text and product ids freely. Discounts come from `mrp` on each product.
  */
 export const heroPromo = {
-  title: "Today's picks",
+  title: 'Fresh picks',
   text: 'Fresh vegetables, milk and bread for the day.',
   tab: 'today',
 };
 
 export const offerBanners = [
-  { id: 'weekly', title: 'Weekly deals', text: 'Sample offer text. Edit it in src/data/offers.ts.', cta: 'See weekly deals', tab: 'weekly', tone: 'forest' as const },
-  { id: 'family', title: 'Family essentials', text: 'Stock up on rice, atta, dal and oil in one go.', cta: 'See family essentials', tab: 'family', tone: 'sage' as const },
+  { id: 'weekly', title: 'Weekly Grocery Deals', text: 'Sample offer text. Edit it in src/data/offers.ts.', cta: 'See weekly deals', tab: 'weekly', tone: 'forest' as const },
+  { id: 'fresh', title: 'Fresh Picks', text: 'Fruit, vegetables, milk and bread for today.', cta: 'See fresh picks', tab: 'today', tone: 'sage' as const },
+  { id: 'family', title: 'Family Essentials', text: 'Stock up on rice, atta, dal and oil in one go.', cta: 'See family essentials', tab: 'family', tone: 'gold' as const },
+  { id: 'special', title: 'Special Offers', text: 'Products marked down from their original price.', cta: 'See special offers', tab: 'savings', tone: 'forest' as const },
 ];
 
 export const offerTabs = [
-  { id: 'today', label: "Today's picks", ids: ['tomato', 'banana', 'milk-1l', 'bread-sandwich', 'curd-400g', 'eggs-6'] },
+  { id: 'today', label: 'Fresh picks', ids: ['tomato', 'banana', 'milk-1l', 'bread-sandwich', 'curd-400g', 'eggs-6'] },
   { id: 'weekly', label: 'Weekly deals', ids: ['rice-basmati-5kg', 'atta-5kg', 'sunflower-oil-1l', 'shampoo-340', 'floor-cleaner-1l', 'digestive'] },
   { id: 'combo', label: 'Combo offers', ids: [] as string[] },
   { id: 'festival', label: 'Festival offers', ids: [] as string[] }, // filled from the active seasonal collection
   { id: 'family', label: 'Family essentials', ids: ['atta-5kg', 'rice-sona-5kg', 'toor-dal-1kg', 'sunflower-oil-1l', 'sugar-1kg', 'salt-1kg'] },
-  { id: 'savings', label: 'Savings collection', ids: [] as string[] }, // auto: products with the biggest discount
+  { id: 'savings', label: 'Special offers', ids: [] as string[] }, // auto: products with the biggest discount
 ];
 
 /** comboPrice must be lower than the sum of the items. */
@@ -45,8 +47,6 @@ export const combos: Product[] = comboDefs.map((c) => {
     unit: `${parts.length} items`,
     price: c.comboPrice,
     mrp: parts.reduce((s, p) => s + p.price, 0),
-    shape: 'box',
-    color: '#173F2B',
     inStock: parts.every((p) => p.inStock),
     bundle: c.items.slice(0, 3),
     includes: parts.map((p) => `${p.name} ${p.unit}`).join(', '),

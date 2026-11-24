@@ -63,7 +63,7 @@ function Panel() {
                 {hits.map((p) => (
                   <li key={p.id}>
                     <button type="button" onClick={() => openQuickView(p.id)} className="flex w-full items-center gap-3 rounded-md p-2 text-left hover:bg-forest/5">
-                      <span className="h-14 w-14 shrink-0 rounded-md" style={{ background: productTint(p) }}><ProductVisual p={p} className="h-full w-full p-1" /></span>
+                      <span className="block h-14 w-14 shrink-0 overflow-hidden rounded-lg" style={{ background: productTint(p) }}><ProductVisual p={p} /></span>
                       <span className="min-w-0 flex-1"><span className="block truncate text-[16px] font-semibold">{p.name}</span><span className="text-sm text-ink/65">{p.unit}{!p.inStock && ' · Out of stock'}</span></span>
                       <Price price={p.price} />
                     </button>

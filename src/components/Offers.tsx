@@ -8,6 +8,7 @@ import { allProducts, getProduct } from '../data/lookup';
 import { percentOff } from '../lib/format';
 import type { Product } from '../types';
 import { ProductCard } from './ProductCard';
+import { ProductPhoto } from './ProductPhoto';
 import { DemoNotice, SectionHead } from './ui';
 
 export const activeSeason = () => (store.seasonal.enabled ? seasons.find((s) => s.key === store.seasonal.active) : undefined);
@@ -34,16 +35,29 @@ export function Offers() {
         <DemoNotice className="-mt-4 mb-5" />
 
         <div className="mb-8 grid gap-4 md:grid-cols-2">
-          {offerBanners.map((b, i) => (
-            <motion.div key={b.id} initial={{ opacity: 0, x: i ? 24 : -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}
-              className={`on-dark relative overflow-hidden rounded-lg p-6 sm:p-8 ${b.tone === 'forest' ? 'bg-forest text-cream' : 'bg-sage-deep text-forest'}`}>
-              <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full border-[22px] border-gold/35" aria-hidden="true" />
-              <h3 className={`text-3xl ${b.tone === 'forest' ? '!text-cream' : ''}`}>{b.title}</h3>
-              <p className={`mt-2 max-w-sm ${b.tone === 'forest' ? 'text-cream/85' : 'text-forest/85'}`}>{b.text}</p>
-              <button type="button" onClick={() => pick(b.tab)} className={`btn mt-5 ${b.tone === 'forest' ? 'btn-gold' : 'btn-primary'}`}>{b.cta} <ArrowRight size={17} aria-hidden="true" /></button>
-              {store.demoData && <span className="absolute bottom-3 right-4 text-xs opacity-70">Sample</span>}
-            </motion.div>
-          ))}
+          {offerBanners.map((b, i) => {
+            const dark = b.tone === 'forest';
+            const tone = dark ? 'bg-forest text-cream' : b.tone === 'gold' ? 'bg-gold-tint text-forest' : 'bg-sage-deep text-forest';
+            const pics = tabProducts(b.tab).slice(0, 3);
+            return (
+              <motion.div key={b.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.45, delay: (i % 2) * 0.08 }}
+                className={`${dark ? 'on-dark' : ''} ${tone} group relative flex min-h-[210px] overflow-hidden rounded-2xl p-6 sm:p-7`}>
+                <div className="relative z-10 flex max-w-[58%] flex-col items-start">
+                  <h3 className={`text-2xl leading-tight sm:text-3xl ${dark ? '!text-cream' : ''}`}>{b.title}</h3>
+                  <p className={`mt-2 text-[15px] ${dark ? 'text-cream/85' : 'text-forest/85'}`}>{b.text}</p>
+                  <button type="button" onClick={() => pick(b.tab)} className={`btn mt-auto ${dark ? 'btn-gold' : 'btn-primary'} mt-5`}>{b.cta} <ArrowRight size={17} aria-hidden="true" /></button>
+                </div>
+                <div className="absolute -right-4 top-1/2 flex -translate-y-1/2 items-center" aria-hidden="true">
+                  {pics.map((p, k) => (
+                    <div key={p.id} className="-ml-9 h-28 w-28 overflow-hidden rounded-full border-4 border-white shadow-lg transition-transform duration-300 group-hover:-translate-y-1 sm:h-32 sm:w-32" style={{ zIndex: 3 - k, transform: `translateY(${k === 1 ? 14 : -6}px)` }}>
+                      <ProductPhoto p={p} className="h-full w-full" />
+                    </div>
+                  ))}
+                </div>
+                {store.demoData && <span className="absolute bottom-3 right-4 text-xs opacity-70">Sample</span>}
+              </motion.div>
+            );
+          })}
         </div>
 
         <div role="tablist" aria-label="Offer groups" className="scroll-row -mx-4 mb-6 px-4 sm:mx-0 sm:px-0">

@@ -11,13 +11,22 @@ npm install
 npm run dev        # http://localhost:5173
 npm run build      # type-check + production build into dist/
 npm run preview    # serve the built site
-npm test           # 40 automated tests (cart, search, budget, WhatsApp message, full-app flows)
+npm test           # automated tests (cart, search, budget, WhatsApp message, photo downloader, full-app flows)
+npm run photos     # download product photos (see section 1)
 ```
 Requires Node 18+. The build prints a **"[store setup]" checklist** of anything not filled in yet.
 
-## 1. Add the real storefront photo (important)
-Save the photo as **`src/assets/store/storefront.jpg`** (`.jpeg .png .webp .avif` also work). It is used automatically in the hero, About and Visit-the-store sections. A landscape photo ~2000 px wide, under ~600 KB, works best. To change the crop, edit `storeImage.position` in `src/config/store.ts` (e.g. `'center 40%'`).
-Until the file exists, those spots show a plain green branded panel (never a made-up shop photo).
+## 1. Photos
+
+**Storefront photo** — already included at `src/assets/store/storefront.jpg` (used in the hero, the store section and the social preview). To replace it, overwrite that file keeping the name. The hero keeps the shop sign visible; change the crop with `storeImage.position` in `src/config/store.ts`.
+
+**Product photos** — every product shows the photo `src/assets/products/<product-id>.jpg` (e.g. `tomato.jpg`). Until a photo exists the card shows a clean icon tile, never a broken image. Three ways to get photos:
+
+1. **Automatic (recommended, ~3 minutes).** Get a free API key at https://www.pexels.com/api/ (sign up, copy the key). Then in the project folder run `npm run photos`, paste the key when asked. It downloads one real photo per product (free Pexels licence, credits saved in `src/assets/products/CREDITS.md`). Look through them; to swap any photo, replace its file keeping the same name. Commit the new files to GitHub.
+2. **Let Vercel do it.** In Vercel: Project → Settings → Environment Variables → add `PEXELS_API_KEY` = your key, then redeploy. Missing photos are downloaded during each build (a failed download never breaks the deploy).
+3. **By hand.** Save your own photos as `<product-id>.jpg` in `src/assets/products/`. `npm run photos:check` lists what is still missing. Square-ish landscape photos around 720×576 px work best.
+
+The automatic search picks the first match for each product, so **check the results**; a few (for example cleaning products) may need a hand-picked replacement.
 
 ## 2. Store details — one file: `src/config/store.ts`
 Name, announcement bar, **phone**, **WhatsApp number**, **address**, **Google Maps link / coordinates**, **opening hours**, pickup/delivery options, social links, About text, SEO title/description, seasonal collection. Leave a field `''` if unknown: it is hidden on the site and left out of SEO data. Nothing is invented.
@@ -28,9 +37,9 @@ Name, announcement bar, **phone**, **WhatsApp number**, **address**, **Google Ma
 - **Before going live:** set `showSetupHints: false` (hides yellow owner notes) and `demoData: false` once real products and prices are in.
 
 ## 3. Products, prices, categories, offers
-- **Products & prices:** `src/data/products.ts` — one line per product: `P(id, name, category, unit, price, shape, color, { mrp, inStock, popular, quick, tags })`. Add `mrp` to show a discount; `inStock: false` marks it unavailable; `quick: true` puts it in "everyday essentials"; `tags` add search words (e.g. `'dahi'`).
-- **Real product photos:** put images in `public/products/` and add `image: '/products/atta.jpg'` to the product. Until then the site uses clean illustrations (no fake brand packaging).
-- **Categories:** `src/data/categories.ts` (name, tint, three product ids for the tile art). A product's `category` must match a category `slug`.
+- **Products & prices:** `src/data/products.ts` — one line per product: `P(id, name, category, unit, price, 'photo search words', { mrp, badge, inStock, popular, quick, tags })`. Add `mrp` to show a discount; `inStock: false` marks it unavailable; `quick: true` puts it in "everyday essentials"; `tags` add search words (e.g. `'dahi'`).
+- **Product photos:** see section 1. Use `badge: 'Popular' | 'Fresh' | 'Best Seller' | 'New'` for the small label on a card.
+- **Categories:** `src/data/categories.ts` (name, tint, and `cover` = the product whose photo is shown on the card). A product's `category` must match a category `slug`.
 - **Offers:** `src/data/offers.ts` — banner text, which products appear in each tab, and combos (`comboPrice` must be lower than the sum of its items). "Savings collection" is automatic (products with an `mrp`).
 - **Seasonal collection:** `src/data/seasons.ts` for content; pick the live one with `seasonal.active` in `store.ts` (`diwali ganesh holi sankranti summer monsoon winter christmas`) or switch it off with `seasonal.enabled: false`. Update it when the season changes.
 - **Delete browser memory of old items:** shoppers' saved carts ignore products that no longer exist.

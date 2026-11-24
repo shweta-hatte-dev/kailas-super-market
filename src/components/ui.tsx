@@ -1,6 +1,7 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Minus, Plus, X, MessageCircle } from 'lucide-react';
+import { Minus, Plus, X } from 'lucide-react';
+import { FaWhatsapp } from 'react-icons/fa6';
 import { store } from '../config/store';
 import { buildWhatsAppUrl, isWhatsAppConfigured } from '../lib/whatsapp';
 import { formatINR } from '../lib/format';
@@ -62,7 +63,8 @@ export function WhatsAppLink({ children, className = '', text = store.whatsappGr
 }
 export const whatsappReady = () => isWhatsAppConfigured(store.whatsappNumber);
 
-export function WhatsAppGlyph({ size = 18 }: { size?: number }) { return <MessageCircle size={size} aria-hidden="true" />; }
+/** Official WhatsApp logo mark. */
+export function WhatsAppGlyph({ size = 18 }: { size?: number }) { return <FaWhatsapp size={size} aria-hidden="true" />; }
 
 export function QtyStepper({ id, name, qty, large = false }: { id: string; name: string; qty: number; large?: boolean }) {
   const { setQty } = useShop();

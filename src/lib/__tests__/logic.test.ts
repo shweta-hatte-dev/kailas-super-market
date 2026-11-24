@@ -26,13 +26,17 @@ describe('data integrity', () => {
     categories.forEach((c) => expect(products.some((p) => p.category === c.slug), c.slug).toBe(true));
   });
   it('references only existing products', () => {
-    categories.forEach((c) => c.art.forEach((id) => expect(get(id), id).toBeTruthy()));
+    categories.forEach((c) => {
+      expect(get(c.cover), c.cover).toBeTruthy();
+      expect(get(c.cover)!.category, c.cover).toBe(c.slug);
+    });
     offerTabs.forEach((t) => t.ids.forEach((id) => expect(get(id), id).toBeTruthy()));
     seasons.forEach((s) => s.productIds.forEach((id) => expect(get(id), id).toBeTruthy()));
     comboDefs.forEach((c) => c.items.forEach((id) => expect(get(id), id).toBeTruthy()));
     expect(seasons.some((s) => s.key === store.seasonal.active)).toBe(true);
   });
   it('combos are cheaper than their parts', () => combos.forEach((c) => expect(c.price).toBeLessThan(c.mrp!)));
+  it('has a photo search phrase for every product', () => products.forEach((p) => expect(p.photoQuery, p.id).toBeTruthy()));
   it('every category has at least 4 products', () =>
     categories.forEach((c) => expect(products.filter((p) => p.category === c.slug).length).toBeGreaterThanOrEqual(4)));
 });
@@ -56,7 +60,7 @@ describe('cart', () => {
     expect(cartSavings(c, get)).toBe(25);
   });
   it('sanitises stored carts', () => {
-    const raw = [{ id: 'milk-1l', qty: 2 }, { id: 'gone', qty: 1 }, { id: 'cheese-slices', qty: 1 }, { id: 'milk-1l', qty: 1 }, { id: 'atta-5kg', qty: -3 }, 'junk'];
+    const raw = [{ id: 'milk-1l', qty: 2 }, { id: 'gone', qty: 1 }, { id: 'mango-1kg', qty: 1 }, { id: 'milk-1l', qty: 1 }, { id: 'atta-5kg', qty: -3 }, 'junk'];
     expect(sanitizeCart(raw, get)).toEqual([{ id: 'milk-1l', qty: 3 }]);
     expect(sanitizeCart('nope', get)).toEqual([]);
   });
@@ -131,7 +135,7 @@ describe('search', () => {
     expect(s('zzzzq')).toEqual([]);
     expect(s('   ')).toEqual([]);
   });
-  it('finds categories', () => expect(matchCategories('clean', categories).map((c) => c.slug)).toEqual(['home-cleaning']));
+  it('finds categories', () => expect(matchCategories('home', categories).map((c) => c.slug)).toEqual(['home-essentials']));
 });
 
 describe('budget', () => {
@@ -156,7 +160,7 @@ describe('shopping list', () => {
     expect(bestMatch('milk', products, categories)?.id).toBe('milk-1l');
     expect(bestMatch('toor dal 1 kg', products, categories)?.id).toBe('toor-dal-1kg');
     expect(bestMatch('spaceship', products, categories)).toBeUndefined();
-    expect(bestMatch('cheese', products, categories)?.id).not.toBe('cheese-slices'); // out of stock is never suggested
+    expect(bestMatch('mango', products, categories)).toBeUndefined(); // out of stock is never suggested
   });
   it('formats a copyable list', () => {
     const t = formatShoppingList([{ id: '1', text: 'Milk', done: false }, { id: '2', text: 'Salt', done: true }], 'Kailas Super Market');
